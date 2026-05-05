@@ -22,20 +22,80 @@
     "configuration": {
       "title": "Prompt Cleaner",
       "properties": {
+        "copilotPromptCleaner.provider": {
+          "type": "string",
+          "default": "openai",
+          "enum": ["openai", "claude", "grok", "custom"],
+          "enumDescriptions": [
+            "OpenAI (GPT models)",
+            "Anthropic Claude",
+            "xAI Grok",
+            "Custom — any OpenAI-compatible endpoint (local servers like Ollama/LM Studio, OpenRouter, Hugging Face, etc.)"
+          ],
+          "description": "The AI provider to use for cleaning prompts"
+        },
+        "copilotPromptCleaner.openai.apiKey": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "API key for OpenAI. Get one at [platform.openai.com](https://platform.openai.com/api-keys)"
+        },
+        "copilotPromptCleaner.openai.model": {
+          "type": "string",
+          "default": "gpt-4o",
+          "description": "OpenAI model to use (e.g. gpt-4o, gpt-4o-mini, gpt-4-turbo)"
+        },
+        "copilotPromptCleaner.claude.apiKey": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "API key for Anthropic Claude. Get one at [console.anthropic.com](https://console.anthropic.com/settings/keys)"
+        },
+        "copilotPromptCleaner.claude.model": {
+          "type": "string",
+          "default": "claude-haiku-4-5",
+          "description": "Claude model to use (e.g. claude-opus-4-5, claude-sonnet-4-5, claude-haiku-4-5)"
+        },
+        "copilotPromptCleaner.grok.apiKey": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "API key for xAI Grok. Get one at [console.x.ai](https://console.x.ai/team/default/api-keys)"
+        },
+        "copilotPromptCleaner.grok.model": {
+          "type": "string",
+          "default": "grok-4.3",
+          "description": "Grok model to use (e.g. grok-4.3, grok-3)"
+        },
+        "copilotPromptCleaner.custom.endpoint": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Base URL for the custom API endpoint (without `/v1`). Examples:\n- Ollama (local): `http://localhost:11434`\n- LM Studio (local): `http://localhost:1234`\n- OpenRouter: `https://openrouter.ai/api`\n- Hugging Face: `https://api-inference.huggingface.co`"
+        },
+        "copilotPromptCleaner.custom.model": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Exact model name as required by the provider. Examples:\n- Ollama: `llama3`, `mistral`, `phi3`\n- OpenRouter: `mistralai/mixtral-8x7b-instruct`\n- Hugging Face: `HuggingFaceH4/zephyr-7b-beta`"
+        },
+        "copilotPromptCleaner.custom.apiKey": {
+          "type": "string",
+          "default": "",
+          "description": "API key for the custom provider. Leave empty for local servers that don't require authentication."
+        },
         "copilotPromptCleaner.endpoint": {
           "type": "string",
           "default": "https://api.openai.com",
-          "description": "OpenAI-compatible API endpoint (without /v1)"
+          "markdownDeprecationMessage": "**Deprecated**: Use `#copilotPromptCleaner.provider#` with per-provider settings instead.",
+          "description": "Deprecated: OpenAI-compatible API endpoint (without /v1)"
         },
         "copilotPromptCleaner.model": {
           "type": "string",
           "default": "gpt-4o",
-          "description": "Model to use for cleaning prompts"
+          "markdownDeprecationMessage": "**Deprecated**: Use `#copilotPromptCleaner.openai.model#` instead.",
+          "description": "Deprecated: Model to use for cleaning prompts"
         },
         "copilotPromptCleaner.apiKey": {
           "type": "string",
           "default": "",
-          "description": "API key (for OpenAI or compatible providers)"
+          "markdownDeprecationMessage": "**Deprecated**: Use `#copilotPromptCleaner.openai.apiKey#` instead.",
+          "description": "Deprecated: API key (for OpenAI or compatible providers)"
         }
       }
     },
