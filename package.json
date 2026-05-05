@@ -3,7 +3,7 @@
   "displayName": "Prompt Cleaner",
   "publisher": "CiprianCirstea",
   "description": "Cleans up your rambling prompts and sends them directly to Copilot Chat",
-  "version": "0.2.4",
+  "version": "0.3.0",
   "icon": "images/icon.png",
   "repository": {
     "type": "git",

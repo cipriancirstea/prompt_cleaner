@@ -223,11 +223,12 @@ export function activate(context: vscode.ExtensionContext) {
             }
             const promptUri = vscode.Uri.joinPath(workspaceFolder, 'prompt.md');
 
-            // If prompt.md is already visible, close it
+            // If prompt.md is already visible, focus it then close it
             const existing = vscode.window.visibleTextEditors.find(
                 e => e.document.uri.fsPath === promptUri.fsPath
             );
             if (existing) {
+                await vscode.window.showTextDocument(existing.document, { viewColumn: existing.viewColumn, preserveFocus: false });
                 await vscode.commands.executeCommand('workbench.action.closeActiveEditor');
                 return;
             }
