@@ -203,11 +203,42 @@ async function cleanPrompt(text: string, token?: vscode.CancellationToken): Prom
     ], token);
 }
 
+/** Known VS Code extension IDs for AI chat assistants */
+const CLAUDE_EXT_IDS = [
+    'anthropic.claude-vscode',
+    'anthropic.claude-code',
+    'anthropics.claude-code',
+];
+const COPILOT_EXT_IDS = [
+    'GitHub.copilot-chat',
+    'GitHub.copilot',
+];
+
+/** Commands to try (in order) to focus the Claude Code chat panel */
+const CLAUDE_FOCUS_COMMANDS = [
+    'claude.chat.focus',
+    'workbench.view.extension.claude',
+    'claude.openChat',
+    'anthropic.openChat',
+];
+
 async function sendToChat(cleaned: string): Promise<void> {
-    await vscode.commands.executeCommand('workbench.action.chat.open', {
-        query: cleaned,
-        isPartialQuery: true,
-    });
+    await vscode.env.clipboard.writeText(cleaned);
+
+    const claudeActive = CLAUDE_EXT_IDS.some(id => vscode.extensions.getExtension(id)?.isActive);
+    const copilotActive = COPILOT_EXT_IDS.some(id => vscode.extensions.getExtension(id)?.isActive);
+
+    if (claudeActive) {
+        for (const cmd of CLAUDE_FOCUS_COMMANDS) {
+            try { await vscode.commands.executeCommand(cmd); break; } catch { /* try next */ }
+        }
+        vscode.window.showInformationMessage('Prompt copied — paste into Claude (⌘V / Ctrl+V)');
+    } else if (copilotActive) {
+        try { await vscode.commands.executeCommand('workbench.action.chat.open'); } catch { /* ignore */ }
+        vscode.window.showInformationMessage('Prompt copied — paste into Copilot Chat (⌘V / Ctrl+V)');
+    } else {
+        vscode.window.showInformationMessage('Prompt copied to clipboard — paste into your AI chat (⌘V / Ctrl+V)');
+    }
 }
 
 export function activate(context: vscode.ExtensionContext) {
